@@ -1,0 +1,12 @@
+Date
+Time
+Alert ID
+Alert Name
+Severity
+Source Host
+Protocol/Port
+Destination IP
+Executive Summary
+Status 
+Category 
+Action Taken 

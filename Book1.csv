@@ -1,0 +1,11 @@
+﻿Date,Time,Alert ID,Alert Name,Severity,Source Host,Protocol/Port,Destination IP,Executive Summary,Status ,Category ,Action Taken 
+10-03-2025,01:36:12,680272091027854151,UDA - Trojan Horse Traffic,Critical,192.168.27.6,TCP port 1492,192.168.2.126,"The new alert involves a internal host 192.168.27.6 is showing signs of being infected with the FTPC9MCP Trojan, attempting to connect over TCP 1492 to 192.168.2.126. This is likely malicious command-and-control or lateral spread traffic. Flows: 14 connections, total of 784 bytes transferred with the duration of 30 sec.",legitimate,False Positive ,
+
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+
