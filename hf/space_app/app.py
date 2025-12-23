@@ -184,4 +184,5 @@ demo = build_demo()
 
 
 if __name__ == "__main__":
-	demo.launch(theme=THEME, css=CUSTOM_CSS)
+	# Disable SSR to avoid asyncio event loop close warnings on shutdown in some environments
+	demo.launch(theme=THEME, css=CUSTOM_CSS, ssr_mode=False)
