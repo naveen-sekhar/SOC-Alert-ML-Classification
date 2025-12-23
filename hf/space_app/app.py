@@ -156,7 +156,7 @@ def build_demo():
 		with gr.Row():
 			with gr.Column(scale=1, min_width=340):
 				gr.Markdown(INSTRUCTIONS)
-				file_input = gr.File(label="1) Upload alerts CSV", file_types=[".csv"], type="filepath")
+				file_input = gr.File(label="1) Upload alerts CSV", file_types=[".csv"], type="file")
 				run_btn = gr.Button("2) Run predictions", variant="primary")
 				gr.Markdown("<span class='muted'>Tip: use the sample CSV if you just want to try it out.</span>", elem_classes=["muted"])
 
