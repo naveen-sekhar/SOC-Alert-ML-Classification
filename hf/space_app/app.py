@@ -43,7 +43,7 @@ for p in (PROJECT_ROOT, PROJECT_ROOT / "src", APP_DIR):
 # Work from project root so predict_alerts_module finds artifacts via relative paths
 os.chdir(PROJECT_ROOT)
 
-from hf.space_app.download_artifacts import ensure_artifacts
+from download_artifacts import ensure_artifacts
 
 # Download artifacts if repo id provided; silently skip if not configured
 ensure_artifacts()
