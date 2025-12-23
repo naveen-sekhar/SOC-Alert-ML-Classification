@@ -1,0 +1,11 @@
+                  precision    recall  f1-score   support
+
+ Benign Activity      1.000     1.000     1.000        43
+  False Positive      1.000     1.000     1.000       145
+         Malware      1.000     1.000     1.000       533
+Policy Violation      1.000     1.000     1.000       365
+  Reconnaissance      1.000     1.000     1.000       414
+
+        accuracy                          1.000      1500
+       macro avg      1.000     1.000     1.000      1500
+    weighted avg      1.000     1.000     1.000      1500

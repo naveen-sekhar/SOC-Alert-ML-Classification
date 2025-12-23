@@ -1,0 +1,11 @@
+                    precision    recall  f1-score   support
+
+           Blocked      0.800     0.957     0.871       255
+            Closed      1.000     1.000     1.000       145
+         Escalated      0.981     0.905     0.942       643
+      Investigated      1.000     1.000     1.000       414
+No Action Required      1.000     1.000     1.000        43
+
+          accuracy                          0.952      1500
+         macro avg      0.956     0.972     0.963      1500
+      weighted avg      0.958     0.952     0.953      1500

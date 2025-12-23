@@ -1,0 +1,19 @@
+# core dependencies used by the training & inference scripts
+pandas>=1.5
+numpy>=1.24
+scikit-learn>=1.2
+scipy>=1.10
+joblib>=1.2
+catboost>=1.2
+
+# optionally useful / utilities
+python-dateutil>=2.8
+# For SBERT text embeddings (higher text accuracy)
+# sentence-transformers>=2.2
+
+# For serving an API
+# fastapi>=0.95
+# "uvicorn[standard]">=0.22
+
+# If you prefer Flask instead of FastAPI
+# flask>=2.2
