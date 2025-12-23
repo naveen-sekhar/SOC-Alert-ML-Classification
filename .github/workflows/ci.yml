@@ -52,7 +52,11 @@ jobs:
   push-space:
     needs: test
     runs-on: ubuntu-latest
-    if: ${{ secrets.HF_TOKEN != '' && secrets.HF_SPACE_ID != '' }}
+    if: ${{ github.event_name == 'push' }}
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE_ID: ${{ secrets.HF_SPACE_ID }}
+      HF_MODEL_REPO: ${{ secrets.HF_MODEL_REPO }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,9 +72,7 @@ jobs:
           python -m pip install huggingface_hub>=0.20.0
 
       - name: Upload Space app to Hugging Face
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_SPACE_ID: ${{ secrets.HF_SPACE_ID }}
+        if: ${{ env.HF_TOKEN != '' && env.HF_SPACE_ID != '' }}
         run: |
           python - <<'PY'
           import os
@@ -89,10 +91,7 @@ jobs:
           PY
 
       - name: Upload model artifacts to Hub (optional)
-        if: ${{ secrets.HF_MODEL_REPO != '' }}
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_MODEL_REPO: ${{ secrets.HF_MODEL_REPO }}
+        if: ${{ env.HF_TOKEN != '' && env.HF_MODEL_REPO != '' }}
         run: |
           python - <<'PY'
           import os
