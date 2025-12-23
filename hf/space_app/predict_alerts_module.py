@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import re
 import joblib
+from pathlib import Path
 
 
 def parse_datetime(date_str, time_str):
@@ -100,31 +101,33 @@ def preprocess_alerts(alerts):
 
 _models_loaded = False
 
+
+def _resolve_path(rel: Path) -> Path:
+    here = Path(__file__).resolve()
+    for cand in [here.parent, *here.parents]:
+        candidate = cand / rel
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(f"Missing model file: {rel}")
+
+
 def _load_models():
     global _models_loaded, models_dict, label_encs, tfidf_main, svd_main, action_model, action_tfidf, action_svd, action_le, CAT_COLS, TEXT_COL
     if _models_loaded:
         return
-    try:
-        models_dict = joblib.load("catboost_models/catboost_models_dict.joblib")
-        label_encs  = joblib.load("catboost_models/label_encoders.joblib")
-        tfidf_main  = joblib.load("catboost_models/tfidf.joblib")
-        svd_main    = joblib.load("catboost_models/svd.joblib")
-    except FileNotFoundError:
-        models_dict = joblib.load("models/catboost_models/catboost_models_dict.joblib")
-        label_encs  = joblib.load("models/catboost_models/label_encoders.joblib")
-        tfidf_main  = joblib.load("models/catboost_models/tfidf.joblib")
-        svd_main    = joblib.load("models/catboost_models/svd.joblib")
 
-    try:
-        action_model = joblib.load("catboost_action_improved/catboost_action_improved.joblib")
-        action_tfidf = joblib.load("catboost_action_improved/tfidf.joblib")
-        action_svd   = joblib.load("catboost_action_improved/svd.joblib")
-        action_le    = joblib.load("catboost_action_improved/action_label_encoder.joblib")
-    except FileNotFoundError:
-        action_model = joblib.load("models/catboost_action_improved/catboost_action_improved.joblib")
-        action_tfidf = joblib.load("models/catboost_action_improved/tfidf.joblib")
-        action_svd   = joblib.load("models/catboost_action_improved/svd.joblib")
-        action_le    = joblib.load("models/catboost_action_improved/action_label_encoder.joblib")
+    cat_root = Path("catboost_models")
+    act_root = Path("catboost_action_improved")
+
+    models_dict = joblib.load(_resolve_path(cat_root / "catboost_models_dict.joblib"))
+    label_encs  = joblib.load(_resolve_path(cat_root / "label_encoders.joblib"))
+    tfidf_main  = joblib.load(_resolve_path(cat_root / "tfidf.joblib"))
+    svd_main    = joblib.load(_resolve_path(cat_root / "svd.joblib"))
+
+    action_model = joblib.load(_resolve_path(act_root / "catboost_action_improved.joblib"))
+    action_tfidf = joblib.load(_resolve_path(act_root / "tfidf.joblib"))
+    action_svd   = joblib.load(_resolve_path(act_root / "svd.joblib"))
+    action_le    = joblib.load(_resolve_path(act_root / "action_label_encoder.joblib"))
 
     CAT_COLS = ["Alert Name", "Severity", "Protocol"]
     TEXT_COL = "Executive Summary"
