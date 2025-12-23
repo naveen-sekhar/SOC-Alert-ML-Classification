@@ -1,4 +1,4 @@
-gradio==4.44.0
+gradio==6.2.0
 catboost>=1.2.5
 pandas>=1.5.0
 numpy>=1.23.0
