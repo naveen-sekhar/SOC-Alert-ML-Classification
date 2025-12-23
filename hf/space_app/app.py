@@ -150,20 +150,20 @@ def build_demo():
 	sample_csv = data_dir / "test_alerts.csv"
 	examples = [[str(sample_csv)]] if sample_csv.exists() else None
 
-	with gr.Blocks(title="SOC Alert Classifier", analytics_enabled=False, css=CUSTOM_CSS, theme=THEME) as demo:
+	with gr.Blocks(title="SOC Alert Classifier") as demo:
 		gr.HTML(DESCRIPTION)
 
 		with gr.Row():
 			with gr.Column(scale=1, min_width=340):
 				gr.Markdown(INSTRUCTIONS)
-				file_input = gr.File(label="1) Upload alerts CSV", file_types=[".csv"], type="file")
+				file_input = gr.File(label="1) Upload alerts CSV", file_types=[".csv"], type="filepath")
 				run_btn = gr.Button("2) Run predictions", variant="primary")
 				gr.Markdown("<span class='muted'>Tip: use the sample CSV if you just want to try it out.</span>", elem_classes=["muted"])
 
 			with gr.Column(scale=2):
 				status_box = gr.HTML(_status_html("Waiting for a file..."))
-				preview = gr.Dataframe(label="Preview (first rows with predictions)", interactive=False, wrap=True)
-				download = gr.File(label="Download predictions CSV")
+				preview = gr.Dataframe(label="Preview (first rows with predictions)", interactive=False)
+				download = gr.File(label="Download predictions CSV", type="filepath")
 
 		run_btn.click(fn=handle_file_upload, inputs=file_input, outputs=[status_box, preview, download])
 
@@ -184,4 +184,4 @@ demo = build_demo()
 
 
 if __name__ == "__main__":
-	demo.launch()
+	demo.launch(theme=THEME, css=CUSTOM_CSS)
