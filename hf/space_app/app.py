@@ -19,10 +19,24 @@ import pandas as pd
 # Paths & imports
 # ---------------------------------------------------------------------------
 APP_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = APP_DIR.parents[1]  # repo root (project/)
+
+
+def _detect_project_root() -> Path:
+	"""Locate project root robustly for local runs and HF Spaces."""
+	override = os.getenv("PROJECT_ROOT")
+	if override:
+		return Path(override).resolve()
+	start = APP_DIR
+	for cand in [start, *start.parents]:
+		if (cand / "src").exists() or (cand / "catboost_models").exists() or (cand / "models").exists():
+			return cand
+	return start
+
+
+PROJECT_ROOT = _detect_project_root()
 
 # Ensure project root and src/ are importable
-for p in (PROJECT_ROOT, PROJECT_ROOT / "src"):
+for p in (PROJECT_ROOT, PROJECT_ROOT / "src", APP_DIR):
 	if str(p) not in sys.path:
 		sys.path.insert(0, str(p))
 

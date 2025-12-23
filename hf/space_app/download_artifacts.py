@@ -15,7 +15,21 @@ try:  # optional dependency; only needed when downloading
 except Exception:  # pragma: no cover - handled at runtime
     hf_hub_download = None  # type: ignore
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+APP_DIR = Path(__file__).resolve().parent
+
+
+def _detect_project_root() -> Path:
+    override = os.getenv("PROJECT_ROOT")
+    if override:
+        return Path(override).resolve()
+    start = APP_DIR
+    for cand in [start, *start.parents]:
+        if (cand / "src").exists() or (cand / "catboost_models").exists() or (cand / "models").exists():
+            return cand
+    return start
+
+
+PROJECT_ROOT = _detect_project_root()
 
 MODEL_FILES: List[str] = [
     "catboost_models/catboost_models_dict.joblib",
