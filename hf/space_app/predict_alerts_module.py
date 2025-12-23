@@ -104,10 +104,12 @@ _models_loaded = False
 
 def _resolve_path(rel: Path) -> Path:
     here = Path(__file__).resolve()
-    for cand in [here.parent, *here.parents]:
-        candidate = cand / rel
-        if candidate.exists():
-            return candidate
+    search_roots = [here.parent, *here.parents]
+    for cand in search_roots:
+        for rel_candidate in (rel, Path("models") / rel):
+            candidate = cand / rel_candidate
+            if candidate.exists():
+                return candidate
     raise FileNotFoundError(f"Missing model file: {rel}")
 
 
