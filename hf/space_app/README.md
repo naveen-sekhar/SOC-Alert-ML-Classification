@@ -1,6 +1,6 @@
 ---
 title: SOC Alert Classifier
-emoji: ":rotating_light:"
+emoji: "🚨"
 colorFrom: red
 colorTo: indigo
 sdk: gradio
