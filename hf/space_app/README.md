@@ -7,7 +7,7 @@ sdk: gradio
 sdk_version: "6.2.0"
 app_file: app.py
 pinned: false
-
+---
 # Hugging Face Space: SOC Alert Classifier (CSV ➜ CSV)
 
 This Gradio Space lets you upload a CSV of alerts and returns predictions for **Status**, **Category**, and **Action Taken** using the CatBoost models from this repo.
