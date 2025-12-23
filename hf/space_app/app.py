@@ -150,7 +150,7 @@ def build_demo():
 	sample_csv = data_dir / "test_alerts.csv"
 	examples = [[str(sample_csv)]] if sample_csv.exists() else None
 
-	with gr.Blocks(title="SOC Alert Classifier", analytics_enabled=False) as demo:
+	with gr.Blocks(title="SOC Alert Classifier", analytics_enabled=False, css=CUSTOM_CSS, theme=THEME) as demo:
 		gr.HTML(DESCRIPTION)
 
 		with gr.Row():
@@ -184,4 +184,4 @@ demo = build_demo()
 
 
 if __name__ == "__main__":
-	demo.launch(css=CUSTOM_CSS, theme=THEME)
+	demo.launch()
