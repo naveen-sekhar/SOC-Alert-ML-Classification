@@ -185,4 +185,7 @@ demo = build_demo()
 
 if __name__ == "__main__":
 	# Disable SSR to avoid asyncio event loop close warnings on shutdown in some environments
-	demo.launch(theme=THEME, css=CUSTOM_CSS, ssr_mode=False)
+	# Bind explicitly for local runs with a stable host/port (overridable via env)
+	_server_name = os.getenv("GRADIO_SERVER_NAME", "127.0.0.1")
+	_server_port = int(os.getenv("GRADIO_SERVER_PORT", "7860"))
+	demo.launch(server_name=_server_name, server_port=_server_port, theme=THEME, css=CUSTOM_CSS, ssr_mode=False)

@@ -1,0 +1,81 @@
+name: CI - Train & Evaluate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  train-eval:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Train CatBoost models (Status/Category/Action baseline)
+        working-directory: data
+        run: |
+          set -euo pipefail
+          python ../src/04_CatBoost_Full_Train.py
+
+      - name: Train improved Action model
+        working-directory: data
+        run: |
+          set -euo pipefail
+          python ../src/05_CatBoost_Action_Improved.py
+
+      - name: Collect trained artifacts into models/
+        run: |
+          set -euo pipefail
+          mkdir -p models
+          # Move/copy from data/* into repository-level models/
+          if [ -d data/catboost_models ]; then
+            rm -rf models/catboost_models
+            mv data/catboost_models models/
+          fi
+          if [ -d data/catboost_action_improved ]; then
+            rm -rf models/catboost_action_improved
+            mv data/catboost_action_improved models/
+          fi
+
+      - name: Ensure root-level paths for evaluation (compat shim)
+        run: |
+          set -euo pipefail
+          # Some scripts expect ./catboost_models and ./catboost_action_improved at repo root
+          # Mirror from models/ if present
+          if [ -d models/catboost_models ]; then
+            rm -rf catboost_models
+            cp -r models/catboost_models ./catboost_models
+          fi
+          if [ -d models/catboost_action_improved ]; then
+            rm -rf catboost_action_improved
+            cp -r models/catboost_action_improved ./catboost_action_improved
+          fi
+
+      - name: Evaluate and produce metrics
+        run: |
+          set -euo pipefail
+          python src/evaluate_metrics.py --input data/smart_siem_dataset.csv --output-dir data/metrics
+
+      - name: Upload artifacts (models + metrics)
+        uses: actions/upload-artifact@v4
+        with:
+          name: models-and-metrics
+          path: |
+            models/**
+            data/metrics/**
+          if-no-files-found: warn
